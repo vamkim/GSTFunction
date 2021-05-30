@@ -7,29 +7,58 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace GSTFunction
 {
-    public static class GSTFunction
+    public class GSTFunction
     {
+        private readonly IXmlProcessService _service;
+        private readonly IConfiguration _configuration;
+
+        public GSTFunction(IConfiguration configuration, IXmlProcessService service)
+        {
+            _configuration = configuration;
+            _service = service;
+        }
         [FunctionName("GSTFunction")]
-        public static async Task<IActionResult> GSTFunctionAsyc(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
+        public async Task<IActionResult> GSTFunctionAsyc(
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            log.LogInformation("Start GST Convertion");
 
-            string name = req.Query["name"];
+            try
+            {
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var returnValue = await processGMTvalues(requestBody);
+                return new OkObjectResult(Newtonsoft.Json.JsonConvert.SerializeObject(returnValue));
+            }
+            catch (Exception ex)
+            {
+                var dic = new Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary();
+                dic.AddModelError("body", $"Invalid body, unable to parse message due to error. ex:{ex.Message}");
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
+                log.LogError($"Invalid body, unable to parse message due to error. ex:{ex.Message}");
+                return new BadRequestObjectResult(dic);
+            }
+        }
 
-            string responseMessage = string.IsNullOrEmpty(name)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name}. This HTTP triggered function executed successfully.";
-
-            return new OkObjectResult(responseMessage);
+        public async Task<Model.expense> processGMTvalues(string requestBody)
+        {
+            var returnValue = new Model.expense();
+            try
+            {
+                double convertedGSTpercentage;
+                double.TryParse(_configuration["GSTpercentage"], out convertedGSTpercentage);
+                var extractedXML = _service.extractXMLinText(requestBody);
+                returnValue = _service.convertXMLtoData(extractedXML, convertedGSTpercentage);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(ex.Message);
+            }
+            return returnValue;
         }
     }
 }
