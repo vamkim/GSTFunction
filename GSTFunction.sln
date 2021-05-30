@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GSTFunction", "GSTFunction\GSTFunction.csproj", "{1EF30BBD-8C87-4376-8EEC-74237379AAF5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GSTFunction.UnitTest", "GSTFunction.UnitTest\GSTFunction.UnitTest.csproj", "{6CD4DD47-6159-46CE-9192-196FD9003E6A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{1EF30BBD-8C87-4376-8EEC-74237379AAF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EF30BBD-8C87-4376-8EEC-74237379AAF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EF30BBD-8C87-4376-8EEC-74237379AAF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CD4DD47-6159-46CE-9192-196FD9003E6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CD4DD47-6159-46CE-9192-196FD9003E6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CD4DD47-6159-46CE-9192-196FD9003E6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CD4DD47-6159-46CE-9192-196FD9003E6A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
