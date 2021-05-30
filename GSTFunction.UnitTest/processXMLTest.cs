@@ -3,7 +3,7 @@ using Xunit;
 using GSTFunction;
 using GSTFunction.Model;
 
-namespace GSTExam.UnitTest
+namespace GSTFunction.UnitTest
 {
     public class processXMLTest
     {

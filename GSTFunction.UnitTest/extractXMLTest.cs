@@ -2,7 +2,7 @@ using System;
 using Xunit;
 using GSTFunction;
 
-namespace GSTExam.UnitTest
+namespace GSTFunction.UnitTest
 {
     public class extractXMLTest
     {
