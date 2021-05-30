@@ -28,20 +28,22 @@ namespace GSTFunction
         {
             log.LogInformation("Start GST Convertion");
 
+            ActionResult resultValue;
             try
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var returnValue = await processGMTvalues(requestBody);
-                return new OkObjectResult(Newtonsoft.Json.JsonConvert.SerializeObject(returnValue));
+                resultValue =  new OkObjectResult(Newtonsoft.Json.JsonConvert.SerializeObject(returnValue));
             }
             catch (Exception ex)
             {
                 var dic = new Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary();
                 dic.AddModelError("body", $"Invalid body, unable to parse message due to error. ex:{ex.Message}");
-
                 log.LogError($"Invalid body, unable to parse message due to error. ex:{ex.Message}");
-                return new BadRequestObjectResult(dic);
+                resultValue = new BadRequestObjectResult(dic);
             }
+            log.LogInformation("Ended GST Convertion");
+            return resultValue;
         }
 
         public async Task<Model.expense> processGMTvalues(string requestBody)
