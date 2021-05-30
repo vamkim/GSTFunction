@@ -10,10 +10,10 @@ using Newtonsoft.Json;
 
 namespace GSTFunction
 {
-    public static class Function1
+    public static class GSTFunction
     {
-        [FunctionName("Function1")]
-        public static async Task<IActionResult> Run(
+        [FunctionName("GSTFunction")]
+        public static async Task<IActionResult> GSTFunctionAsyc(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
